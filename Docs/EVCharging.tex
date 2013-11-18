@@ -1,0 +1,94 @@
+\documentclass {article}
+\usepackage {charter}
+
+\usepackage {setspace} 
+\doublespacing
+\setlength {\parindent}{0pt}
+
+\begin {document}
+
+\title {EV Charging Problem Formulation}
+\author {Zheng Lu}
+\maketitle
+
+\section {Relate Works}
+Reference \cite{Valley Filling} formed the EV charging problem as an optimal control problem whose object is valley filling.
+
+Reference \cite{Aggregate Utility} formed it as a scheduling problem with an object of maximize total consumer utility.
+
+Reference \cite{EE Scheduling} study the energy efficiency of scheduling problem, which I found is similar to our problem.
+
+\section {Problem Formulation}
+\subsection {Symbols}
+\begin {tabular} { l l }
+$N$ & number of EVs. \\
+$T$ & horizon of scheduling, usually being a day. \\
+$t$ & time slot, $t \in T = \{ 1, \ldots ,T \}$. \\
+$\Delta T$ & length of time slots. \\
+$r_i(t)$ & charging rate of EV i at time t. \\
+$r(t)$ & charging rate vector $\{ r_1(t), \ldots , r_N(t) \}$. \\
+$E_i(t)$ & remaining capacity to be charged of EV i at time t. \\
+$D(t)$ & state of the grid at time t, non-EV load at time t. \\
+$L(t)$ & total load at time t. \\
+$C(L(t))$ & total cost at time t. \\
+$u()$ & user utility function. \\
+\end{tabular}
+
+%\bigskip
+%remaining time to be charged for EV i at time t is
+%
+%$c_i(t) = \frac{E_i(t)}{r_i^{max}}$
+%the slack time can be formed as
+%$s_i(t) = deadline_i - t - c_i(t)
+
+\subsection {Problem 1 Valley Filling}
+
+Total load at time t is
+
+\centerline{$L(t) = D(t) + \sum_{i=1}^N r_i(t)$}
+
+suppose the flattened load is $V_{flat}$, then valley fill can be formed as
+
+\centerline{$\sum_{i=1}^N r_i(t) = \max\{0, V_{flat} - D(t)\}$}
+
+when cost function $C()$ is strictly convex, valley-filling is equal to cost minimization \cite{Valley Filling}
+
+\centerline {
+\begin {tabular} { l l }
+$\min$ & $C(D(t) + \sum_{i=1}^N r_i(t))$ \\
+s.t. & $0 \leq r_i(t) \leq r_i^{max}, t \in T, n \in N$
+\end {tabular}
+}
+
+\subsection {Problem 2 Aggregate Utility}
+
+Assume users are equally satisfied as long as EV charging meet deadline. 
+The user utility decreases as the remaining capacity after deadline increases.
+
+Define each user's utility:
+
+\centerline {$u_i = u(E_i(t_{deadline}))$}
+
+Assume utility function $u: \Re \rightarrow \Re$ to be concave, the problem of maximize aggregated utility can be formed as
+
+\centerline {
+\begin {tabular} { l l }
+$\max$ & $\sum_{i=1}^N u_i$
+\end {tabular}
+}
+
+
+
+\begin{thebibliography}{1}
+
+\bibitem{Valley Filling}
+	Gan, Lingwen, Ufuk Topcu, and Steven H. Low. "Optimal decentralized protocol for electric vehicle charging." (2012): 1-12.
+\bibitem{Aggregate Utility}
+	Xu, Yunjian, and Feng Pan. "Scheduling for charging plug-in hybrid electric vehicles." Decision and Control (CDC), 2012 IEEE 51st Annual Conference on. IEEE, 2012.
+\bibitem{EE Scheduling}
+	Sinha, Amit, and Anantha P. Chandrakasan. "Energy efficient real-time scheduling." Proceedings of the 2001 IEEE/ACM international conference on Computer-aided design. IEEE Press, 2001.
+
+\end{thebibliography}
+
+
+\end {document}
