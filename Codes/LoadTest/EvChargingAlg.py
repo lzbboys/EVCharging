@@ -1,10 +1,10 @@
-import cPickle as pickle
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 class Alg:
 	''' The Algorithm for EV charging'''
 	def __init__(self, ldFileName, evList, limit):
 		self.ldFileName = ldFileName
-		self.rsFileName = 'result.txt'
 		self.ldList = []
 		self.evList = evList
 		self.limit = limit
@@ -29,20 +29,38 @@ class Alg:
 class Greedy(Alg):
 	''' Greedy charging scheme '''
 	def solve(self):
-		total = self.total
+		remaining = self.total
 		rsList = []
+		tlList = []
 		for ld in self.ldList:
-			if total <= 0:
-				break
-			chargingLd = self.limit - ld
-			rsList.append(chargingLd if chargingLd < total else total)
-			total -= self.limit - ld
+			available = (self.limit - ld) if (self.limit - ld) > 0 else 0
+			chargingLd = available if available < remaining else remaining
+			rsList.append(chargingLd)
+			tlList.append(chargingLd + ld)
+			remaining -= chargingLd
 
-		print rsList
-		f = file(self.rsFileName, 'w')
-		for rs in rsList:
-			f.write('%d,' % (rs))
-		f.close()
+		return rsList, tlList, remaining
 
 class ValleyFilling(Alg):
 	''' Valley filling charging scheme '''
+	def setLimit(self, val):
+		# Just for test use
+		self.limit = val
+
+	def solve(self):
+		for level in range(self.limit + 1):
+			# For each iteration, same as greedy, since it is already considered optimal
+			remaining = self.total
+			rsList = []
+			tlList = []
+			for ld in self.ldList:
+				available = (level - ld) if (level - ld) > 0 else 0
+				chargingLd = available if available < remaining else remaining
+				rsList.append(chargingLd)
+				tlList.append(chargingLd + ld)
+
+				remaining -= chargingLd
+			if remaining <= 0:
+				break
+		
+		return rsList, tlList, remaining
