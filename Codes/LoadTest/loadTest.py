@@ -4,7 +4,7 @@
 # load test for different kind of charging schemes
 
 from EvClass import Ev
-from EvChargingAlg import Greedy, ValleyFilling
+from EvChargingAlg import *
 
 evList = [Ev(3), Ev(5), Ev(7), Ev(2)]
 
