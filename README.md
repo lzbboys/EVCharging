@@ -10,4 +10,4 @@ Zheng Lu (zlu12@utk.edu)
 Description
 ===========
 
-Python implemented simulator aiming to verify different EV charging schemes
+Python implemented simulator aiming to evaluate different EV charging schemes and make improvements.
